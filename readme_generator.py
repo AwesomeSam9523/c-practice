@@ -30,6 +30,7 @@ def get_list() -> t.List[t.Tuple[str, str]]:
         for file in os.listdir(folder):
             if file.endswith(".c"):
                 filepath = os.path.join(folder, file)
+                filepath = filepath.replace("\\", "/")
         
         if filepath == "":
             print(f"ERROR! Folder {folder} does not contain any C file.")
