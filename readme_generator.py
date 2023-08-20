@@ -21,10 +21,18 @@ done_levels = [0]
 def get_filename(folder: str) -> str:
     return " ".join([x.capitalize() for x in folder.split("_")[1:]])
 
+def get_sorted_files(folder: t.Optional[str]):
+    """This sorts the inner files in ascending order"""
+    files = os.listdir(folder)
+    if folder is not None and all(x.split("_")[0].isdigit() for x in files):
+        files = sorted(files, key=lambda x: int(x.split("_")[0]))
+
+    return files
+
 def get_name_and_path(folder: t.Optional[str] = None, level: int = 0) -> None:
     global markup
     
-    for file in os.listdir(folder):
+    for file in get_sorted_files(folder):
         if file in [".git", "README.md", "readme_generator.py", ".gitignore"]:
             continue
         

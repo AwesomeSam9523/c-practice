@@ -20,3 +20,4 @@
     - [Addition Subtraction](6_excercises/7_addition_subtraction/add_sub.c)
     - [Star Pattern](6_excercises/8_star_pattern/star.c)
     - [Herons Formula](6_excercises/9_herons_formula/herons.c)
+    - [Circle Question](6_excercises/10_circle_question/circle.c)
