@@ -12,43 +12,46 @@ base = f"""# 🍵 Some basic C programs
 ### These are some programs I make while I learn C.
 `Last Updated: {last_updated}`
 
-> List of all programs:
+### List of all programs:
 """
 
-def get_list() -> t.List[t.Tuple[str, str]]:
-    """Returns back with the list of folder names in ascending order."""
-    folders = []
-    for folder in os.listdir():
-        if not os.path.isdir(folder):
+markup = ""
+done_levels = [0]
+
+def get_filename(folder: str) -> str:
+    return " ".join([x.capitalize() for x in folder.split("_")[1:]])
+
+def get_name_and_path(folder: t.Optional[str] = None, level: int = 0) -> None:
+    global markup
+    
+    for file in os.listdir(folder):
+        if file in [".git", "README.md", "readme_generator.py", ".gitignore"]:
             continue
-
-        if folder == ".git":
-            continue
-
-        filepath: str = ""
-
-        for file in os.listdir(folder):
-            if file.endswith(".c"):
-                filepath = os.path.join(folder, file)
-                filepath = filepath.replace("\\", "/")
         
-        if filepath == "":
-            print(f"ERROR! Folder {folder} does not contain any C file.")
+        if folder is None:
+            filepath = file
+        else:
+            filepath = os.path.join(folder, file)
+
+        if folder and "\\" in folder:
+            folder = folder.split("\\")[-1]
+
+        filename = get_filename(folder or file)
+
+        if file.endswith(".c"):
+            filepath = filepath.replace("\\", "/")
+            markup += f"{level * '  '}- [{filename}]({filepath})\n"
+    
+        if os.path.isdir(filepath):
+            if level not in done_levels:
+                markup += f"{level * '  '}- {filename}\n"
+                done_levels.append(level)
+            get_name_and_path(filepath, level + 1)
             continue
 
-        filename = " ".join([x.capitalize() for x in folder.split("_")[1:]])
 
-        folders.append((filename, filepath))
-    
-    folders = sorted(folders, key=lambda x: x[1])
-    return folders
-    
 if __name__ == "__main__":
-    folder_list = get_list()
-
-    markup = ""
-    for data in folder_list:
-        markup += f"> - [{data[0]}]({data[1]})\n"
+    get_name_and_path()
     
     with open("README.md", "w", encoding="utf-8") as f:
         f.write(base + markup)
