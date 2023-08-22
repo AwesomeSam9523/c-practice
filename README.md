@@ -1,7 +1,11 @@
 # 🍵 Some basic C programs
 
 ### These are some programs I make while I learn C.
-`Last Updated: 20 Aug'23`
+`Last Updated: 22 Aug'23`
+
+- Total files: `16`
+- Total lines: `315`
+- Total characters: `4,554`
 
 ### List of all programs:
   - [Hello World](1_hello_world/hello_world.c)
